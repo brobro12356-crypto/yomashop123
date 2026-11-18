@@ -1,1 +1,103 @@
 
+join("");
+
+}
+
+function addCart(name){
+
+const product=products.find(p=>p.name===name);
+
+cart.push(product);
+
+updateCart();
+
+}
+
+function updateCart(){
+
+document.getElementById("count").innerText=cart.length;
+
+document.getElementById("total").innerText=
+cart.reduce((sum,p)=>sum+p.price,0).toFixed(2);
+
+const area=document.getElementById("cartItems");
+
+if(cart.length===0){
+
+area.innerHTML="Your cart is empty.";
+
+return;
+
+}
+
+area.innerHTML=cart.map((p,i)=>`
+
+<div class="cart-item">
+${p.name} - $${p.price.toFixed(2)}
+<button onclick="removeCart(${i})">❌</button>
+</div>
+
+`).join("");
+
+}
+
+function removeCart(i){
+
+cart.splice(i,1);
+
+updateCart();
+
+}
+
+function showCart(){
+
+document.getElementById("cartBox").scrollIntoView({
+behavior:"smooth"
+});
+
+}
+
+function searchProducts(){
+
+const value=document.getElementById("search").value.toLowerCase();
+
+const result=products.filter(p=>
+p.name.toLowerCase().includes(value)
+);
+
+displayProducts(result);
+
+}
+
+function checkout(){
+
+if(cart.length===0){
+
+alert("Your cart is empty!");
+
+return;
+
+}
+
+let message="Hello YOMA STORE! I want to order:\n\n";
+
+cart.forEach(p=>{
+message+=p.name+" - $"+p.price.toFixed(2)+"\n";
+});
+
+message+="\nTotal: $"+
+cart.reduce((sum,p)=>sum+p.price,0).toFixed(2);
+
+window.open(
+"https://t.me/"+telegram+"?text="+encodeURIComponent(message),
+"_blank"
+);
+
+}
+
+displayProducts();
+
+</script>
+
+</body>
+</html>
